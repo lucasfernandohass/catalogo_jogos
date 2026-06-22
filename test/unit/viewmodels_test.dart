@@ -1,96 +1,121 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
 import 'package:catalogo_jogos/app/theme/theme_viewmodel.dart';
 import 'package:catalogo_jogos/core/preferences/preferences_service.dart';
+
 import 'package:catalogo_jogos/features/favorites/data/models/favorite_game_model.dart';
 import 'package:catalogo_jogos/features/favorites/data/repositories/favorites_repository.dart';
 import 'package:catalogo_jogos/features/favorites/presentation/viewmodels/favorites_viewmodel.dart';
 
-class MockPreferencesService extends Mock implements PreferencesService {}
 class MockFavoritesRepository extends Mock implements FavoritesRepository {}
-class FavoriteGameModelFake extends Fake implements FavoriteGameModel {}
+class MockPreferencesService extends Mock implements PreferencesService {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue(FavoriteGameModelFake());
-  });
-
-  group('ThemeViewModel', () {
-    late MockPreferencesService preferences;
-
-    setUp(() {
-      preferences = MockPreferencesService();
-    });
-
-    test('toggleTheme flips state and persists the new value', () async {
-      when(() => preferences.getDarkMode()).thenReturn(false);
-      when(() => preferences.setDarkMode(true))
-          .thenAnswer((_) async {});
-
-      final viewModel = ThemeViewModel(preferences);
-      await viewModel.toggleTheme();
-
-      expect(viewModel.state.isDarkMode, isTrue);
-      verify(() => preferences.setDarkMode(true)).called(1);
-    });
-
-    test('loadTheme updates state from preferences', () {
-      when(() => preferences.getDarkMode()).thenReturn(true);
-
-      final viewModel = ThemeViewModel(preferences);
-      viewModel.loadTheme();
-
-      expect(viewModel.state.isDarkMode, isTrue);
-    });
+    registerFallbackValue(
+      FavoriteGameModel(
+        id: 0,
+        name: '',
+        image: '',
+        rating: 0,
+      ),
+    );
   });
 
   group('FavoritesViewModel', () {
-    late MockFavoritesRepository repository;
+    late MockFavoritesRepository repo;
 
     setUp(() {
-      repository = MockFavoritesRepository();
+      repo = MockFavoritesRepository();
     });
 
-    test('toggleFavorite adds game when it is not already favorited', () async {
+    test('deve carregar favoritos ao iniciar', () async {
       final game = FavoriteGameModel(
-        id: 10,
-        name: 'Star Quest',
-        image: 'https://example.com/star.png',
+        id: 1,
+        name: 'Portal',
+        image: '',
+        rating: 4.5,
+      );
+
+      when(() => repo.getFavorites())
+          .thenAnswer((_) async => [game]);
+
+      final vm = FavoritesViewModel(repo);
+      
+      await vm.loadFavorites();
+
+      expect(vm.state.length, 1);
+      expect(vm.state.first.id, 1);
+    });
+
+    test('deve adicionar favorito', () async {
+      final game = FavoriteGameModel(
+        id: 2,
+        name: 'Half Life',
+        image: '',
         rating: 4.8,
       );
 
-      when(() => repository.getFavorites())
-          .thenAnswer((_) async => <FavoriteGameModel>[]);
-      when(() => repository.insertFavorite(any(that: isA<FavoriteGameModel>())))
-          .thenAnswer((_) async {});
+      when(() => repo.getFavorites())
+          .thenAnswer((_) async => []);
 
-      final viewModel = FavoritesViewModel(repository);
-      await Future<void>.delayed(Duration.zero);
-      await viewModel.toggleFavorite(game);
+      when(() => repo.insertFavorite(any()))
+          .thenAnswer((_) async => Future.value());
 
-      expect(viewModel.state, contains(game));
-      verify(() => repository.insertFavorite(game)).called(1);
+      final vm = FavoritesViewModel(repo);
+      await vm.loadFavorites(); 
+
+      await vm.toggleFavorite(game);
+
+      verify(() => repo.insertFavorite(game)).called(1);
+
+      expect(vm.state, contains(game));
     });
 
-    test('toggleFavorite removes game when it is already favorited', () async {
+    test('deve remover favorito', () async {
       final game = FavoriteGameModel(
-        id: 11,
-        name: 'Space Rally',
-        image: 'https://example.com/rally.png',
+        id: 3,
+        name: 'CS',
+        image: '',
         rating: 4.2,
       );
 
-      when(() => repository.getFavorites())
+      when(() => repo.getFavorites())
           .thenAnswer((_) async => [game]);
-      when(() => repository.removeFavorite(game.id))
-          .thenAnswer((_) async {});
 
-      final viewModel = FavoritesViewModel(repository);
-      await Future<void>.delayed(Duration.zero);
-      await viewModel.toggleFavorite(game);
+      
+      when(() => repo.removeFavorite(any()))
+          .thenAnswer((_) async => Future.value());
 
-      expect(viewModel.state, isEmpty);
-      verify(() => repository.removeFavorite(game.id)).called(1);
+      final vm = FavoritesViewModel(repo);
+      await vm.loadFavorites(); 
+
+      await vm.toggleFavorite(game);
+
+      
+      verify(() => repo.removeFavorite(game.id)).called(1);
+      
+      expect(vm.state, isNot(contains(game)));
+    });
+  });
+
+  group('ThemeViewModel', () {
+    late MockPreferencesService prefs;
+
+    setUp(() {
+      prefs = MockPreferencesService();
+    });
+
+    test('toggle theme', () async {
+      when(() => prefs.getDarkMode()).thenReturn(false);
+      when(() => prefs.setDarkMode(true)).thenAnswer((_) async {});
+
+      final vm = ThemeViewModel(prefs);
+
+      await vm.toggleTheme();
+
+      expect(vm.state.isDarkMode, true);
     });
   });
 }

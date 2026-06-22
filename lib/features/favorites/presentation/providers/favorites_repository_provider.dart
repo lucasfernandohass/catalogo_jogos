@@ -15,3 +15,5 @@ final favoritesDaoProvider = Provider<FavoritesDao>((ref) {
 final favoritesRepositoryProvider = Provider<FavoritesRepository>((ref) {
   return FavoritesRepository(ref.read(favoritesDaoProvider));
 });
+
+//import 'package:catalogo_jogos/features/favorites/presentation/providers/favorites_repository_provider.dart';
