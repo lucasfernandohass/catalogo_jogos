@@ -1,0 +1,203 @@
+# ==========================================================
+# Flutter / Dart
+# ==========================================================
+
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+.pub-cache/
+build/
+
+# Flutter generated
+**/generated_plugin_registrant.dart
+**/flutter_export_environment.sh
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+
+# Coverage
+coverage/
+lcov.info
+
+# ==========================================================
+# Android
+# ==========================================================
+
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+*.apk
+*.aab
+
+local.properties
+key.properties
+
+# Android Studio captures
+captures/
+
+# ==========================================================
+# iOS
+# ==========================================================
+
+ios/Flutter/.last_build_id
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+
+ios/Pods/
+ios/.symlinks/
+
+# Xcode
+*.xcworkspace
+xcuserdata/
+DerivedData/
+
+# ==========================================================
+# macOS
+# ==========================================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+Icon?
+._*
+
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+.com.apple.timemachine.donotpresent
+
+# ==========================================================
+# Windows
+# ==========================================================
+
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+Desktop.ini
+
+$RECYCLE.BIN/
+
+*.lnk
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ==========================================================
+# Linux
+# ==========================================================
+
+*~
+.fuse_hidden*
+.directory
+
+.Trash-*
+.nfs*
+
+# ==========================================================
+# VS Code
+# ==========================================================
+
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# ==========================================================
+# IntelliJ / Android Studio
+# ==========================================================
+
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# ==========================================================
+# Logs
+# ==========================================================
+
+*.log
+*.tmp
+*.temp
+*.pid
+*.seed
+
+# ==========================================================
+# Environment Files
+# ==========================================================
+
+.env
+.env.*
+!.env.example
+
+# ==========================================================
+# Database Files
+# ==========================================================
+
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+
+# ==========================================================
+# Generated Reports
+# ==========================================================
+
+test-results/
+reports/
+htmlcov/
+
+# ==========================================================
+# Cache
+# ==========================================================
+
+.cache/
+.cache-loader/
+.sass-cache/
+
+# ==========================================================
+# Backup Files
+# ==========================================================
+
+*.bak
+*.backup
+*.old
+*.orig
+
+# ==========================================================
+# Misc
+# ==========================================================
+
+*.swp
+*.swo
+
+.history/
+.idea_modules/
+
+# JetBrains cache
+out/
+
+# Node (caso utilize scripts auxiliares)
+node_modules/
+
+# Temporary archives
+*.zip
+*.tar
+*.gz
+*.7z
